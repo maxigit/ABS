@@ -1,0 +1,327 @@
+/* vim: tabstop=16:softtabstop=16 noexpandtab */
+Footwork:
+' croche  .
+*,x noire   : rest - freeze
+" step, step
+,X,$,T blanche, step, cross jumb compression, triple
+  = freeze 
+  :: rest
+  % rock step
+  @ step rest
+  & step step
+  ? jump
+  A,I, S  2 feet
+  a,i, s 1 beat version
+  M 2 feet , but not close
+
+
+  _ anything even
+  <
+  >
+() in one block, length what needed to match the number of stuff in it, and the length of the ()
+2 beat on an even beat, 
+1 on odd
+ 
+[] at the same time (duration of the longest one, except if a rest is in it)
+[:    ] is always 1 beat
+
+donc A = [^|*] (left foot ^) (different foot)
+^|*
+*|* [*|*] [**]
+
+\^* ^\* [^*] same foot
+  
+A I
+ 
+** ;* ** ;*
+%@ _@
+$@ 
+
+% # *s (AI)
+% # *s ai
+basic=
+#1\(
+	 **	! %
+	 ;*	! {
+	 **	! _
+	 ;*	! }
+\)
+
+%<@>
+
+% { _ }
+^ kick
+o hold
+v kick back
+V kick back and step (no needed anymore) = [v|*]
+A kick and step
+> cote
+
+>/*
+modifier:
+~ slide 
+# brush, drag
+! touch
+\ transform to modifier
+
+/!\ slide and freeze part of the body
+[#~>!][~>@]
+~!> !~> ~\>@
+
+:Weight and body (abstract footwork)
+$ jump compression (maybe to put in footwork)
+" jump (non already triple step)
+% rock step (? in foot work?)
+_ nothing or even 
+< change weight to the left
+> change weight to the right
+? half turn
+@ turn
+@@ turn
+(positive turn equal = outside .il on left foot to the right)
+-?? 1/4 turn
+
+2(..)
+? 1/2 turn
+@ turn
+?? 1/4
+@@ 2 turns
+
+position relatives:
+V \/ standard
+|V|
+
+|| close
+|=| far away
+|^| far away
+|v| far away
+|.| far away
+|..| far  away
+|V|
+|__|
+_v_
+_^_
+-v-
+^-v
+v-^
+v-v
+^-^
+>=> ?Charle
+|_@| enroule
+
+Basic:
+** "* ** "*
+
+
+** ^* ^o ^*
+|<|>
+_<_>
+-<->
+.<.>
+
+
+Charleston: ** ^* ^o v*     %<_>
+%^-v
+%^^V
+
+Balboa
+** ^* ** v*
+
+...
+
+** X ** X
+^v ^* ^v ^*
+^v ^* ^v ^*
+?^?v
+
+?(^v^) * ?(^v^) *
+?^^^ * ?^^^ *
+
+\ ^ /
+< x >
+/ v \
+ 
+^v^* ^v^*
+?  < ?  >
+?(^v^) <(*) ?(^v^) >(*)
+?^v^ <* ?^v^ >*
+
+?<?>: ^v^ * ^v^ *       (bon if faut grouper, mais ca marche sans grouper car on peut deduire sur les *)
+?<?>: ^v^ * ^v^ *       (v-v,>=<) ^-^ . ()
+?<?>: ^v ^* ^v ^*
+  ^-^ >=<
+  v-v
+  ...
+  v-v >=<
+  ^-^
+ 
+  ^-^ >=< v-v >=<
+
+%<-> (rock step)
+
+
+%$_"
+%$"_
+
+** $ _ @ 
+** $ @ _
+
+%$_@
+%$@_
+** $ @
+swing out:
+>@ >-<     | >
+  v@^ ><@
+< >1G-<
+#L 
+
+
+|-|
+|_|
+|@|
+>^<|
+>-<@
+><@
+
+
+%^ov
+
+When need
+footwork, for Leader and Follower
+global orientation
+what is body weight and body displacement, is that the same ? I suppose , interfere with footwork
+relative positions
+
+
+** ^* ^o v*
+       s ~
+
+% ^- ^s ~* 
+
+** ^* ^[so] [~v]*
+
+** ^* ^o/s v\~*
+** ^* ^o{s} v{~}*
+** ^* ^[o:s] [v:~]*
+
+@: % ^? *s (AI)
+#1 slide.
+- feet
+- body
+- couple - arms
+
+
+R T S T
+! & $ 
+$(stst)
+$^
+//
+\\
+\(^)
+/>/
+/^-^/
+& ^-^/
+# time specification
+#1.1-1.3  range
+/tsts tsts/
+b( tstst)b
+ " for shuffle or trip..
+,`
+** ,,*
+** ;*
+*+ *+
+*\'^
+* ^\'
+
+^/+
+^\+
+s[~#smiling#]A
+
+%\3\2\3
+
+hop : => [*|] [*|]
+
+
+
+#annotaton#
+#..# just after an selector restrict this one
+
+!#bum#> bum move
+\#right# right foot
+same foot operator ? like |
+turn, jump, length of stance (A I M etc ...)
+\ modifier defaut, at the same time (as previous one)
+
+susieQ$ mwmw Q
+Symbol            Duration           Footwork               Body                Orientation             Arms/Position
+                  # time ()                 \                      !                   $ (boussole)                      & (tangling)
+$c   apply only to c
+$(...) stuff between ()
+$ ... (beginning of a line) everything until the next global modifier
+act as separator in [] and () if followed by space
+
+
+m w                                   angle of feet       M stanse 1 beat
+i,I pieds colle
+a, A pieds espacess
+h, H pieds sous les epaules
+z, Z pieds croise, l un devant l'autre (espace, x sion), a voir
+q, Q suzieQ
+k knee
+
+pied droit en avant !/
+pied gauche ... !\
+
+Regles du temps:
+chaque parties gere son temps independamment et boucle (si longueur differentes)
+anchor
+#.1 beat
+#1.8|1.2 bar|beat
+8: label
+
+operator
+~                 0 (linker)                                slide
+~~ jump
+/                                 a/b and b , length of a
+[~...]  while sliding
+
+
+'                 1/2                 touch
+,                 1/2                step
+. : ::            1/2 1 2            rest (pause)
+
+;                 1                  step step
+"                 1                   shufle
+:                 1                  rest
+*                 1                  step
++                 1                  touch
+x (X)             1 (2)              step -crossed for 
+^                 1                  kick                  move               direction               body orientation
+!#bum#^                                                        bum move
+!#neck#^                                                        neck move
+o                 1                  center (kick)
+- =               1 2                freeze               freeze
+
+Number                                number of step (need \ in other mode)
+%                 2                  rock step             +"
+{                 2 (0 in fw)                              weight transfert
+_, -                 2                                        anything even
+[:=] or /-  = 1 beat freeze in body mode
+
+?                 1                                       half/turn
+@                 2                  step                     turn
+
+? = ?2
+(??) = 1/4 = ?4 
+(@@) = 2 = @2
+(@?) = 1+1/2
+\@ inside
+@ outside
+\@2
+
+| in ( ) cut in even part, in [left| right] [leader|follower] except if modified \[ ** ! = ]  (! needs to be followed by a space
+
+!l 
+
+% \3 \2 \3
+
