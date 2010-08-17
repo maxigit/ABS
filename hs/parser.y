@@ -3,7 +3,7 @@ module HappyParser where
 import Lexer
 }
 
-%name abswing
+%name parser
 %tokentype { Token}
 %error { parseError}
 
@@ -16,14 +16,16 @@ import Lexer
   
 
 %%
-commands : command { $1 }
+commands : command { [TCommand $1 ] }
+         | command commands {   (TCommand $1):$2}
 
 
 
 
 
 {
-main = getContents >>= print . abs. lexer
+-- main = getContents >>= print . parser . lexer
+parse = parser.lexer
 parseError :: [Token] -> a
 parseError _ = error "Parse error"
 -- a la fin
