@@ -5,6 +5,8 @@ module Lexer where
 %wrapper "basic"
 $channel = [\\\!\$\\@]
 $alpha = [a-zA-Z]
+$spaces = [\ \t]
+$commands = $printable # $spaces
 
 
 
@@ -19,8 +21,8 @@ tokens :-
   "/"              { \s -> TSlash }
   "|"            {  \s -> TPipe }
   \n          { \s -> TNewline}
-  "  \t"+   { \s -> TSpaces  }
-  $printable     { \s -> TCommand s }
+  $spaces+   { \s -> TSpaces  }
+  $commands     { \s -> TCommand s }
 
 {
 
