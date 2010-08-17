@@ -3,38 +3,28 @@ module HappyParser where
 import Lexer
 }
 
-%name abs
+%name abswing
 %tokentype { Token}
-%error { ParseError}
+%error { parseError}
 
 %token
-  title  { TString $$ }
+  title  { TLabel $$ }
   NL     { TNewline }
   SP     { TSpaces }
-  command { TCommand String }
-  selector { TChannel $$ }}
+  command { TCommand $$ }
+  selector { TChannel $$ }
   
 
 %%
-block : title 
-        lines
-
-lines : line             { [$1] }
-        | line lines     { $1 : $2 }
-
-line : commands NL 
-
-commands : metacommand SP commands
-
-metacommand : command
-              | selector command
-
-selected_commands : selector SP commands
+commands : command { $1 }
 
 
 
 
 
 {
+main = getContents >>= print . abs. lexer
+parseError :: [Token] -> a
+parseError _ = error "Parse error"
 -- a la fin
 }

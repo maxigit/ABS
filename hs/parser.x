@@ -9,7 +9,7 @@ $alpha = [a-zA-Z]
 
 
 tokens :-
-  ^ [a-zA-Z][^:\n]* /:      { \s -> Tlabel s }
+  ^ [a-zA-Z][^:\n]* /:      { \s -> TLabel s }
   "\#"$alpha+"#" { \s -> TChannel $(init.tail.tail) s }
   \\             { \s -> TChannel "feet" }
   \!             { \s -> TChannel "body" }
@@ -25,7 +25,7 @@ tokens :-
 {
 
 data Token = TChannel String  |
-             Tlabel String |
+             TLabel String |
              TSlash           |
              TPipe            |
              TNewline|
@@ -34,4 +34,6 @@ data Token = TChannel String  |
              deriving (Show, Eq);
 
 
+lexer = alexScanTokens
 }
+
