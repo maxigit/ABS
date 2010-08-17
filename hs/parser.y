@@ -3,7 +3,7 @@ module HappyParser where
 import Lexer
 }
 
-%name parser
+%name parser  commands
 %tokentype { Token}
 %error { parseError}
 
@@ -11,19 +11,25 @@ import Lexer
   title  { TLabel $$ }
   NL     { TNewline }
   SP     { TSpaces }
-  command { TCommand $$ }
-  selector { TChannel $$ }
+  tcommand { TCommand $$ }
+  tselector { TChannel $$ }
   
 
 %%
-commands : command { [TCommand $1 ] }
-         | command commands {   (TCommand $1):$2}
+commands : command { [ $1 ] }
+         | command commands { $1:$2 } 
 
+
+command : tcommand { PCommand $1 Nothing }
+ | tselector tcommand { PCommand $2 (Just $1) }
+
+selector : tselector { TChannel $1 }
 
 
 
 
 {
+data PCommand = PCommand {command :: String, channel :: (Maybe String)} deriving (Show, Eq)
 -- main = getContents >>= print . parser . lexer
 parse = parser.lexer
 parseError :: [Token] -> a
