@@ -3,6 +3,7 @@ module Lexer where
 import Data.Ratio
 import Control.Monad.State
 
+
 }
 
 %wrapper "basic"
@@ -32,6 +33,7 @@ tokens :-
   \"             { \s -> newCommand "feet" "shuffle" (1) }
   :            { \s -> TCommand (return ("",1)) }
   \.            { \s -> TCommand (return ("",1/2)) }
+  \^            { \s -> TCommand (State command_up) }
 
  
 
@@ -52,9 +54,12 @@ data Token = TChannel String  |
              TCommand MCommand
              --deriving (Show, Eq);
 
+command_up :: String -> (Command, String)
+command_up "feet" = (("kick", 1), "feet")
+command_up "body" = (("move forward", 2), "body")
 
 lexer = alexScanTokens
 run :: String -> Token -> (Command, String)
-run s (TCommand m) = runState m "feet"
+run s (TCommand m) = runState m s
 }
 
