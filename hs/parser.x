@@ -61,5 +61,6 @@ command_up "body" = (("move forward", 2), "body")
 lexer = alexScanTokens
 run :: String -> Token -> (Command, String)
 run s (TCommand m) = runState m s
+run s _ = (("", 0), s)
 }
 
