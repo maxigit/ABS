@@ -1,6 +1,7 @@
 {
 module HappyParser where
 import Lexer
+import Control.Monad.State
 }
 
 %name parser   
@@ -18,17 +19,17 @@ import Lexer
 %%
 -- set of command without separators
 
-channel_sequence : tselector SP words {  PSequence (Just $1) $3 }
+channel_sequence : tselector SP words { map  (run $1) (concat $3) }
 words : word { [$1] }
       | word SP words { $1:$3 }
 word : command { [ $1 ] }
          | command word { $1:$2 } 
 
 
-command : tcommand { PCommand $1 Nothing }
- | tselector tcommand { PCommand $2 (Just $1) }
+command : tcommand { TCommand $1 }
+ | tselector tcommand { TCommand $ State (\c -> runState $2 $1)  }
 
-selector : tselector { TChannel $1 }
+selector : tselector { $1 }
 
 
 

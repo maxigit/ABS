@@ -31,8 +31,8 @@ tokens :-
   \,             { \s -> newCommand "feet" "step" (1/2) }
   \'             { \s -> newCommand "feet" "touch" (1/2) }
   \"             { \s -> newCommand "feet" "shuffle" (1) }
-  :            { \s -> TCommand (return ("",1)) }
-  \.            { \s -> TCommand (return ("",1/2)) }
+  :            { \s -> TCommand (return ("rest",1)) }
+  \.            { \s -> TCommand (return ("rest",1/2)) }
   \^            { \s -> TCommand (State command_up) }
 
  
