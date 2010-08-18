@@ -1,5 +1,8 @@
 {
 module Lexer where
+import Data.Ratio
+import Control.Monad.State
+
 }
 
 %wrapper "basic"
@@ -22,9 +25,19 @@ tokens :-
   "|"            {  \s -> TPipe }
   \n          { \s -> TNewline}
   $spaces+   { \s -> TSpaces  }
-  $commands     { \s -> TCommand s }
+  --$commands     { \s -> TCommand s }
+  \*            { \s -> TCommand (State (\c-> (("step", 1), "feet"))) }
+  :            { \s -> TCommand (State (\c-> (("",1), c))) }
+
+ 
 
 {
+type Command = (String, Rational)
+type MCommand = State String Command
+
+newCommand :: String -> String -> Rational -> Token
+newCommand channel command length  = TCommand (State (\c -> ((command, length), channel)))
+
 
 data Token = TChannel String  |
              TLabel String |
@@ -32,10 +45,12 @@ data Token = TChannel String  |
              TPipe            |
              TNewline|
              TSpaces      |
-             TCommand String
-             deriving (Show, Eq);
+             TCommand MCommand
+             --deriving (Show, Eq);
 
 
 lexer = alexScanTokens
+run :: String -> Token -> (Command, String)
+run s (TCommand m) = runState m "feet"
 }
 
