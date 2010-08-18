@@ -27,7 +27,11 @@ tokens :-
   $spaces+   { \s -> TSpaces  }
   --$commands     { \s -> TCommand s }
   \*            { \s -> TCommand (State (\c-> (("step", 1), "feet"))) }
+  \,             { \s -> newCommand "feet" "step" (1/2) }
+  \'             { \s -> newCommand "feet" "touch" (1/2) }
+  \"             { \s -> newCommand "feet" "shuffle" (1) }
   :            { \s -> TCommand (return ("",1)) }
+  \.            { \s -> TCommand (return ("",1/2)) }
 
  
 
