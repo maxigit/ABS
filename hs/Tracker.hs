@@ -7,10 +7,14 @@ type Beat = Rational
 --Command : what is sent to channel
 --data Command = Command { name :: String, args :: [String] } deriving (Show, Eq)
 type Command = Writer [String] String
+newCommand :: String -> Command
+newCommand s = return s
 
 {-data Event = Event { beat :: Beat, command ::  Command } deriving (Show, Eq)-}
 type RationalM = Sum Rational
 type Event =  Writer RationalM Command
+newEvent :: Command -> Event
+newEvent c = return c
 
 {-instance Show Event  where-}
   {-show (Event ev) = (show d) ++ " : " ++ (show c) where (c, d) = runWriter ev-}
