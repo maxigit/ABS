@@ -10,9 +10,10 @@ import Control.Monad.State
 $channel = [\\\!\$\\@]
 $alpha = [a-zA-Z]
 $spaces = [\ \t]
-$commands = $printable # $spaces
+$actions = $printable # $spaces
 
 
+-- we use action , as opposed to command, because an action has duration
 
 tokens :-
   ^ [a-zA-Z][^:\n]* /:      { \s -> TLabel s }
@@ -26,23 +27,26 @@ tokens :-
   "|"            {  \s -> TPipe }
   \n          { \s -> TNewline}
   $spaces+   { \s -> TSpaces  }
-  --$commands     { \s -> TCommand s }
-  \*            { \s -> TCommand (State (\c-> (("step", 1), "feet"))) }
-  \,             { \s -> newCommand "feet" "step" (1/2) }
-  \'             { \s -> newCommand "feet" "touch" (1/2) }
-  \"             { \s -> newCommand "feet" "shuffle" (1) }
-  :            { \s -> TCommand (return ("rest",1)) }
-  \.            { \s -> TCommand (return ("rest",1/2)) }
-  \^            { \s -> TCommand (State command_up) }
+  --$actions     { action $ s }
+  \*            { action $ (State (\c-> (("step", 1), "feet"))) }
+  \,             { newAction "feet" "step" (1/2) }
+  \'             { newAction "feet" "touch" (1/2) }
+  \"             { newAction "feet" "shuffle" (1) }
+  :            { action $ (return ("rest",1)) }
+  \.            { action $ (return ("rest",1/2)) }
+  \^            { action $ (State action_up) }
 
  
 
 {
-type Command = (String, Rational)
-type MCommand = State String Command
+type Action = (String, Rational)
+type MAction = State String Action
 
-newCommand :: String -> String -> Rational -> Token
-newCommand channel command length  = TCommand (State (\c -> ((command, length), channel)))
+newAction :: String -> String -> Rational -> String -> Token
+newAction channel action length s  = TAction (State (\c -> ((action, length), channel)))
+
+action :: MAction -> a -> Token
+action m s =  TAction m
 
 
 data Token = TChannel String  |
@@ -51,16 +55,16 @@ data Token = TChannel String  |
              TPipe            |
              TNewline|
              TSpaces      |
-             TCommand MCommand
+             TAction MAction
              --deriving (Show, Eq);
 
-command_up :: String -> (Command, String)
-command_up "feet" = (("kick", 1), "feet")
-command_up "body" = (("move forward", 2), "body")
+action_up :: String -> (Action, String)
+action_up "feet" = (("kick", 1), "feet")
+action_up "body" = (("move forward", 2), "body")
 
 lexer = alexScanTokens
-run :: String -> Token -> (Command, String)
-run s (TCommand m) = runState m s
+run :: String -> Token -> (Action, String)
+run s (TAction m) = runState m s
 run s _ = (("", 0), s)
 }
 
