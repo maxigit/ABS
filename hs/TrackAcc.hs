@@ -28,4 +28,4 @@ instance Monoid TrackAcc where
   mappend  (TrackAcc a) (TrackAcc b) = TrackAcc (unionWith mappend a b)
 
 emptyAcc :: TrackAcc
-emptyAcc = empty
+emptyAcc = mempty
