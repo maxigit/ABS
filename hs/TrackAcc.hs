@@ -23,11 +23,9 @@ pushEvent :: TrackAcc -> Channel -> Event -> Beat -> TrackAcc
 pushEvent (TrackAcc m) ch ev d = TrackAcc $ insertWith mappend ch v m where
   v = TrackState d d [ev]
 
-{-
- -instance Monoind TrackAcc where
- -  mempty = Track empty 
- -  mappend  
- -}
+instance Monoid TrackAcc where
+  mempty = TrackAcc empty 
+  mappend  (TrackAcc a) (TrackAcc b) = TrackAcc (unionWith mappend a b)
 
 emptyAcc :: TrackAcc
-emptyAcc = TrackAcc empty
+emptyAcc = empty
