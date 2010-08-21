@@ -14,14 +14,23 @@ instance Monoid TrackState where
   mappend (TrackState l i es) (TrackState l' i' es') = TrackState (l+l') (i+i') (es++es'') where 
     es'' = Prelude.map (delayed i) es'
 
+-- merge to track without shiftind any time  o events
+mergeTrack :: TrackState -> TrackState -> TrackState
+mergeTrack (TrackState l i es) (TrackState l' i' es') = TrackState (l) (i) (es++es') where 
+
 emptyState :: TrackState
 emptyState = mempty
 
 --addTrack = reduce pushEventToTra
--- make Event a monad to manage the time => Timed , we might to add the duration
-pushEvent :: TrackAcc -> Channel -> Event -> Beat -> TrackAcc
-pushEvent (TrackAcc m) ch ev d = TrackAcc $ insertWith mappend ch v m where
-  v = TrackState d d [ev]
+-- add an command to Accumutor and update instert point accordingly to the length
+pushCommand :: TrackAcc -> Channel -> Command -> Beat -> TrackAcc
+pushCommand (TrackAcc m) ch com del = TrackAcc $ insertWith mappend ch v m where
+  v = TrackState del del [newEvent com]
+
+-- add an commmand to Accumutor at the specified position, no update of the inse`t point
+insertCommand :: TrackAcc -> Channel -> Command -> Beat -> TrackAcc
+insertCommand (TrackAcc m) ch com p = TrackAcc $ insertWith (flip mergeTrack ) ch v m where
+  v = TrackState 0 0 [event com p]
 
 instance Monoid TrackAcc where
   mempty = TrackAcc empty 
