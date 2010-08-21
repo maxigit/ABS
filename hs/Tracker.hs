@@ -16,6 +16,9 @@ type Event =  Writer RationalM Command
 newEvent :: Command -> Event
 newEvent c = return c
 
+event :: Command -> Beat -> Event
+event com b = Writer (com, (Sum b))
+
 {-instance Show Event  where-}
   {-show (Event ev) = (show d) ++ " : " ++ (show c) where (c, d) = runWriter ev-}
 
