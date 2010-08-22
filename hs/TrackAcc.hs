@@ -43,6 +43,12 @@ shiftInsertPoint :: Beat -> Channel -> TrackAcc -> TrackAcc
 shiftInsertPoint d ch acc = updateTrackState f ch acc where
   f (TrackState l i es) = TrackState l (i+d) es
 
+insertCommandAndShiftChannel :: TrackAcc -> Channel -> Channel -> Command -> Beat -> TrackAcc
+insertCommandAndShiftChannel acc chi chs c l = shiftInsertPoint l chs (insertCommand acc chi c p ) where
+    p = case  (getTrackState chs acc) of
+          Nothing -> 0
+          Just t -> insertPoint t
+
 instance Monoid TrackAcc where
   mempty = TrackAcc M.empty 
   mappend  (TrackAcc a) (TrackAcc b) = TrackAcc (M.unionWith mappend a b)

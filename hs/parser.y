@@ -40,7 +40,8 @@ selector : tselector { $1 }
 
 addActions :: Channel -> TrackAcc -> [MAction] -> TrackAcc
 addActions ch acc acs  = foldl push acc (map f acs) where
-     push acc' (ch', c, l)  = pushCommand acc' ch' c l
+     push acc' (ch', c, l) | ch' == ch  = pushCommand acc' ch' c l
+                           | True  = insertCommandAndShiftChannel acc' ch' ch c l
      f m = (ch', return a , l) where ((a, l), ch') = runState m ch
 
 data PAction = PAction {action :: String, channel :: (Maybe String)} deriving (Show, Eq)
