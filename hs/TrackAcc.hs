@@ -1,5 +1,6 @@
 module TrackAcc where
-import Data.Map
+import Data.Map(Map)
+import qualified Data.Map as M
 import Tracker
 import Data.Monoid
 
@@ -24,17 +25,27 @@ emptyState = mempty
 --addTrack = reduce pushEventToTra
 -- add an command to Accumutor and update instert point accordingly to the length
 pushCommand :: TrackAcc -> Channel -> Command -> Beat -> TrackAcc
-pushCommand (TrackAcc m) ch com del = TrackAcc $ insertWith mappend ch v m where
+pushCommand (TrackAcc m) ch com del = TrackAcc $ M.insertWith mappend ch v m where
   v = TrackState del del [newEvent com]
 
 -- add an commmand to Accumutor at the specified position, no update of the inse`t point
 insertCommand :: TrackAcc -> Channel -> Command -> Beat -> TrackAcc
-insertCommand (TrackAcc m) ch com p = TrackAcc $ insertWith (flip mergeTrack ) ch v m where
+insertCommand (TrackAcc m) ch com p = TrackAcc $ M.insertWith (flip mergeTrack ) ch v m where
   v = TrackState 0 0 [event com p]
 
+getTrackState :: Channel -> TrackAcc -> (Maybe TrackState)
+getTrackState ch (TrackAcc m) = M.lookup ch m
+
+updateTrackState :: (TrackState -> TrackState) -> Channel ->  TrackAcc -> TrackAcc
+updateTrackState f ch (TrackAcc m) = TrackAcc ( M.adjust f ch m)
+
+shiftInsertPoint :: Beat -> Channel -> TrackAcc -> TrackAcc
+shiftInsertPoint d ch acc = updateTrackState f ch acc where
+  f (TrackState l i es) = TrackState l (i+d) es
+
 instance Monoid TrackAcc where
-  mempty = TrackAcc empty 
-  mappend  (TrackAcc a) (TrackAcc b) = TrackAcc (unionWith mappend a b)
+  mempty = TrackAcc M.empty 
+  mappend  (TrackAcc a) (TrackAcc b) = TrackAcc (M.unionWith mappend a b)
 
 emptyAcc :: TrackAcc
 emptyAcc = mempty
