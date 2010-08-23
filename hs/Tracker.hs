@@ -28,7 +28,7 @@ readWriterLog w = b where (a, b) = runWriter w
   {-show (Event ev) = (show d) ++ " : " ++ (show c) where (c, d) = runWriter ev-}
 
 instance (Show w, Show a) => Show (Writer w a) where
-  show (Writer (a, w)) =  (show w) ++ " : " ++ (show a)
+  show (Writer (a, w)) =  (show a) ++ " => " ++ (show w)
 --we want command to be sorted by subchannel
 --no sub channel for now data  CommandSet = CommandSet { subchannel :: (Maybe String), commands :: CommandSet }
 

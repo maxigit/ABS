@@ -58,11 +58,14 @@ instance Monoid TrackAcc where
 emptyAcc :: TrackAcc
 emptyAcc = mempty
 
-accToScore :: [Channel] -> TrackAcc -> Score
-accToScore chs acc = [ (ch, groupTrack (getTrackState ch acc))  | ch <- chs ] where
+accToSubScore :: [Channel] -> TrackAcc -> Score
+accToSubScore chs acc = [ (ch, groupTrack (getTrackState ch acc))  | ch <- chs ] where
   groupTrack Nothing = []
   groupTrack (Just ts) = map group (groupBy myeq evs) where
       evs = events ts
   myeq e e' = (readWriterLog e ) == (readWriterLog e')
-  group (w:ws) = (getSum (readWriterLog w), map readWriter (w:ws))
+  group (w:ws) = (getSum (readWriterLog w) + 1, map readWriter (w:ws))
+
+accToScore :: TrackAcc -> Score
+accToScore acc@(TrackAcc m) = accToSubScore (M.keys m) acc
 
