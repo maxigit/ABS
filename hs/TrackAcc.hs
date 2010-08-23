@@ -25,7 +25,7 @@ emptyState = mempty
 --addTrack = reduce pushEventToTra
 -- add an command to Accumutor and update instert point accordingly to the length
 pushCommand :: TrackAcc -> Channel -> Command -> Beat -> TrackAcc
-pushCommand (TrackAcc m) ch com del = TrackAcc $ M.insertWith mappend ch v m where
+pushCommand (TrackAcc m) ch com del = TrackAcc $ M.insertWith (flip mappend) ch v m where
   v = TrackState del del [newEvent com]
 
 -- add an commmand to Accumutor at the specified position, no update of the inse`t point
