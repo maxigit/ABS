@@ -3,6 +3,8 @@ import Data.Map(Map)
 import qualified Data.Map as M
 import Tracker
 import Data.Monoid
+import Data.List(groupBy)
+import Control.Monad.Writer
 
 {-TrackAcc is used by the Parser and store , all the intermediatary states need to parse it-}
 data TrackState = TrackState { lastBeat :: Beat, insertPoint :: Beat, events :: [Event]} deriving (Show)
@@ -55,3 +57,12 @@ instance Monoid TrackAcc where
 
 emptyAcc :: TrackAcc
 emptyAcc = mempty
+
+accToScore :: [Channel] -> TrackAcc -> Score
+accToScore chs acc = [ (ch, groupTrack (getTrackState ch acc))  | ch <- chs ] where
+  groupTrack Nothing = []
+  groupTrack (Just ts) = map group (groupBy myeq evs) where
+      evs = events ts
+  myeq e e' = (readWriterLog e ) == (readWriterLog e')
+  group (w:ws) = (getSum (readWriterLog w), map readWriter (w:ws))
+

@@ -19,6 +19,11 @@ newEvent c = return c
 event :: Command -> Beat -> Event
 event com b = Writer (com, (Sum b))
 
+readWriter :: Writer a b -> b
+readWriter w = a where (a, b) = runWriter w
+
+readWriterLog :: Writer a b -> a
+readWriterLog w = b where (a, b) = runWriter w
 {-instance Show Event  where-}
   {-show (Event ev) = (show d) ++ " : " ++ (show c) where (c, d) = runWriter ev-}
 
@@ -36,8 +41,12 @@ delayed :: Rational -> Event -> Event
 delayed d e = write (Sum d) e
 
 
-type Track = [Event]
+type Track = [(Beat, CommandGroup)] -- should be sorted
+type Score = [(Channel, Track)]
 
 {-data Tracker = Tracker Map-}
+type CommandGroup = [Command]
+type Line = [(Channel, CommandGroup )]
+type Tracker = [(Beat, Line)]
 
 
