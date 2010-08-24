@@ -55,7 +55,8 @@ newtype Tracker = Tracker { tLines :: [(Beat, Line)] }
 -- The main function !. Transpose a list of Tracks (Score)  to a list of lines (Tracker)
 scoreToTracker :: Score -> Tracker
 scoreToTracker [] = Tracker []
-scoreToTracker sc  = Tracker $ (b, line) : (tLines (scoreToTracker sc')) where
+scoreToTracker sc | beats == [ ] = Tracker []
+                    | True = Tracker $ (b, line) : (tLines (scoreToTracker sc')) where
   channels = [ c | (c, t)  <- sc ]       :: [Channel]
   tracks =  [ t | (c, t)  <- sc ]      :: [Track]
   beats = [ b | (b, g) <-  catMaybes (map listToMaybe tracks) ]     :: [Beat]
@@ -68,5 +69,19 @@ scoreToTracker sc  = Tracker $ (b, line) : (tLines (scoreToTracker sc')) where
   line = zip channels (map (\(g, t) -> g) prunes)
   sc' = zip channels (map (\(g, t) -> t) prunes)
 
-showTracker :: Tracker -> [String]
-showTracker = undefined
+showTracker :: Tracker -> String
+showTracker (Tracker []) = ""
+showTracker (Tracker ((b, line):bls)) = "#" ++ (show (fromRational b :: Float)) ++ ":\t" ++ (showLine line) ++ "\n" ++ (showTracker (Tracker bls))
+
+showLine :: Line -> String
+showLine [] = []
+showLine ((ch, gs):line) = (show ch) ++ ":\t" ++ (myjoin ", " (map show' gs)) ++ "\t" ++ (showLine line) where
+  show' (Writer (c, args)) = myjoin " " (c:args)
+
+myjoin sep [] = []
+myjoin sep (a:[]) = a
+myjoin sep (a:as) = a ++ sep ++ (join as)
+
+
+instance Show Tracker where
+  show  t = showTracker t
