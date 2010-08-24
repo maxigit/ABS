@@ -49,13 +49,13 @@ type Score = [(Channel, Track)]
 {-data Tracker = Tracker Map-}
 type CommandGroup = [Command]
 type Line = [(Channel, CommandGroup )]
-type Tracker = [(Beat, Line)]
+newtype Tracker = Tracker { tLines :: [(Beat, Line)] }
 
 
 -- The main function !. Transpose a list of Tracks (Score)  to a list of lines (Tracker)
 scoreToTracker :: Score -> Tracker
-scoreToTracker [] = []
-scoreToTracker sc  = (b, line) : scoreToTracker sc' where
+scoreToTracker [] = Tracker []
+scoreToTracker sc  = Tracker $ (b, line) : (tLines (scoreToTracker sc')) where
   channels = [ c | (c, t)  <- sc ]       :: [Channel]
   tracks =  [ t | (c, t)  <- sc ]      :: [Track]
   beats = [ b | (b, g) <-  catMaybes (map listToMaybe tracks) ]     :: [Beat]
@@ -67,3 +67,6 @@ scoreToTracker sc  = (b, line) : scoreToTracker sc' where
                          | True = ([], all)
   line = zip channels (map (\(g, t) -> g) prunes)
   sc' = zip channels (map (\(g, t) -> t) prunes)
+
+showTracker :: Tracker -> [String]
+showTracker = undefined
