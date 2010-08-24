@@ -75,7 +75,7 @@ showTracker (Tracker ((b, line):bls)) = "#" ++ (show (fromRational b :: Float)) 
 
 showLine :: Line -> String
 showLine [] = []
-showLine ((ch, gs):line) = (show ch) ++ ":\t" ++ (myjoin ", " (map show' gs)) ++ "\t" ++ (showLine line) where
+showLine ((ch, gs):line) = (ch) ++ ":\t" ++ (myjoin ", " (map show' gs)) ++ "\t" ++ (showLine line) where
   show' (Writer (c, args)) = myjoin " " (c:args)
 
 myjoin sep [] = []
