@@ -1,5 +1,6 @@
 module Tracker where
 import Control.Monad.Writer
+import Maybe
 
 type Channel = String
 type Beat = Rational
@@ -41,6 +42,7 @@ delayed :: Rational -> Event -> Event
 delayed d e = write (Sum d) e
 
 
+-- A track is a transposed score
 type Track = [(Beat, CommandGroup)] -- should be sorted
 type Score = [(Channel, Track)]
 
@@ -50,3 +52,18 @@ type Line = [(Channel, CommandGroup )]
 type Tracker = [(Beat, Line)]
 
 
+-- The main function !. Transpose a list of Tracks (Score)  to a list of lines (Tracker)
+scoreToTracker :: Score -> Tracker
+scoreToTracker [] = []
+scoreToTracker sc  = (b, line) : scoreToTracker sc' where
+  channels = [ c | (c, t)  <- sc ]       :: [Channel]
+  tracks =  [ t | (c, t)  <- sc ]      :: [Track]
+  beats = [ b | (b, g) <-  catMaybes (map listToMaybe tracks) ]     :: [Beat]
+  b = foldl1 min beats
+  prunes = map (prune) tracks
+  prune :: Track ->  (CommandGroup, Track)
+  prune [] = ([], [])
+  prune all@((b', g):ts) | b' == b = ( g, ts)
+                         | True = ([], all)
+  line = zip channels (map (\(g, t) -> g) prunes)
+  sc' = zip channels (map (\(g, t) -> t) prunes)
