@@ -1,6 +1,7 @@
 module Tracker where
 import Control.Monad.Writer
 import Maybe
+import Data.List(intercalate)
 
 type Channel = String
 type Beat = Rational
@@ -75,13 +76,8 @@ showTracker (Tracker ((b, line):bls)) = "#" ++ (show (fromRational b :: Float)) 
 
 showLine :: Line -> String
 showLine [] = []
-showLine ((ch, gs):line) = (ch) ++ ":\t" ++ (myjoin ", " (map show' gs)) ++ "\t" ++ (showLine line) where
-  show' (Writer (c, args)) = myjoin " " (c:args)
-
-myjoin sep [] = []
-myjoin sep (a:[]) = a
-myjoin sep (a:as) = a ++ sep ++ (join as)
-
+showLine ((ch, gs):line) = (ch) ++ ":\t" ++ (intercalate ", " (map show' gs)) ++ "\t" ++ (showLine line) where
+  show' (Writer (c, args)) = intercalate " " (c:args)
 
 instance Show Tracker where
   show  t = showTracker t
