@@ -81,3 +81,20 @@ showLine ((ch, gs):line) = (ch) ++ ":\t" ++ (intercalate ", " (map show' gs)) ++
 
 instance Show Tracker where
   show  t = showTracker t
+
+addBlankLine :: Beat -> Tracker -> Tracker
+addBlankLine b t = _addBlankLine 1 b t
+
+_addBlankLine :: Beat -> Beat -> Tracker -> Tracker
+_addBlankLine _ _ (Tracker []) = Tracker []
+_addBlankLine pos st t@(Tracker (l:ls)) | pos == start = Tracker  $ l  : (tLines ( _addBlankLine (pos + st) st (Tracker ls)))
+                                     | pos < start = Tracker $ (pos, [(ch, []) | ch <- channels])  : (tLines ( _addBlankLine (pos+st) st (Tracker (l:ls))))
+    where
+    channels = getChannels t
+    (start, _) = l
+
+getChannels :: Tracker -> [Channel]
+getChannels (Tracker []) = []
+getChannels (Tracker (l:ls)) = [c | (c,_) <- firstLine ] where
+  (b, firstLine ) = l
+
