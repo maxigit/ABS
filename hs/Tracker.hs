@@ -73,10 +73,13 @@ scoreToTracker sc | beats == [ ] = Tracker []
 showTracker :: Tracker -> String
 showTracker (Tracker []) = ""
 showTracker (Tracker ((b, line):bls)) = "#" ++ (show (fromRational b :: Float)) ++ ":\t" ++ (showLine line) ++ "\n" ++ (showTracker (Tracker bls))
+showLines :: [(Beat, Line)] -> [String]
+showLines  lines = [("#" ++ (show (fromRational b :: Float)) ++ ":\t" ++ (showLine line)) | (b, line) <- lines]
+
 
 showLine :: Line -> String
 showLine [] = []
-showLine ((ch, gs):line) = (ch) ++ ":\t" ++ (intercalate ", " (map show' gs)) ++ "\t" ++ (showLine line) where
+showLine line  = (intercalate "\t|" [ intercalate ", " (map show' gs) | (ch, gs) <- line]) where
   show' (Writer (c, args)) = intercalate " " (c:args)
 
 instance Show Tracker where
