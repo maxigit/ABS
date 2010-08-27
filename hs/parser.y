@@ -51,5 +51,7 @@ data PSequence = PSequence { channel2 :: (Maybe String), actions :: [[PAction]] 
 parse = parser.lexer
 parseError :: [Token] -> a
 parseError _ = error "Parse error"
+
+parseScore = accToScore . parse
 -- a la fin
 }
