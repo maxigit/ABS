@@ -2,6 +2,7 @@ module Tracker where
 import Control.Monad.Writer
 import Maybe
 import Data.List(intercalate)
+import Ratio as R
 
 type Channel = String
 type Beat = Rational
@@ -74,7 +75,15 @@ showTracker :: Tracker -> String
 showTracker (Tracker []) = ""
 showTracker t@(Tracker lines) = (intercalate "\n" ((showHeader t):[]:(showLines lines)))
 showLines :: [(Beat, Line)] -> [String]
-showLines  lines = [("#" ++ (show (fromRational b :: Float)) ++ ":\t" ++ (showLine line)) | (b, line) <- lines]
+showLines  lines = [("#" ++ (showB b)  ++ "\t" ++ (showLine line)) | (b, line) <- lines]
+  where showB b | (n `mod` d) == 0 = (show f) ++ ":"
+                | ((2*n) `mod` d) == 0 = "" -- 1/2 time, no time display
+                | True =  (show b' ) ++ "." ++ (show (n `mod` d)) ++ "/" ++ (show d)  ++ ":" -- exotic time, displayed as fraction
+          where
+            f = fromRational b :: Float
+            n = R.numerator b :: Integer
+            d = R.denominator b :: Integer
+            b' = n `div`  d :: Integer
 
 showHeader :: Tracker -> String
 showHeader t =  "\t" ++ (intercalate "\t| " [ ch | (ch, _) <- firstLine t]) where
@@ -97,11 +106,12 @@ addBlankLine b t = _addBlankLine 1 b t
 
 _addBlankLine :: Beat -> Beat -> Tracker -> Tracker
 _addBlankLine _ _ (Tracker []) = Tracker []
-_addBlankLine pos st t@(Tracker (l:ls)) | pos == start = Tracker  $ l  : (tLines ( _addBlankLine (pos + st) st (Tracker ls)))
-                                     | pos < start = Tracker $ (pos, [(ch, []) | ch <- channels])  : (tLines ( _addBlankLine (pos+st) st (Tracker (l:ls))))
+_addBlankLine pos st t@(Tracker (l:ls)) | pos == line_pos = Tracker  $ l  : (tLines ( _addBlankLine (pos + st) st (Tracker ls)))
+                                        | pos > line_pos = Tracker  $ l  : (tLines ( _addBlankLine (pos) st (Tracker ls))) -- score line before current step
+                                     | pos < line_pos = Tracker $ (pos, [(ch, []) | ch <- channels])  : (tLines ( _addBlankLine (pos+st) st (Tracker (l:ls))))
     where
     channels = getChannels t
-    (start, _) = l
+    (line_pos, _) = l
 
 getChannels :: Tracker -> [Channel]
 getChannels (Tracker []) = []

@@ -30,6 +30,7 @@ tokens :-
   --$actions     { action $ s }
   \*            { action $ (State (\c-> (("step", 1), "feet"))) }
   \,             { newAction "feet" "step" (1/2) }
+  3             { newAction "feet" "step" (1/3) }
   \'             { newAction "feet" "touch" (1/2) }
   \"             { newAction "feet" "shuffle" (1) }
   :            { action $ (return ("rest",1)) }
