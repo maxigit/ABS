@@ -36,6 +36,14 @@ tokens :-
   :            { action $ (return ("rest",1)) }
   \.            { action $ (return ("rest",1/2)) }
   \^            { action $ (State action_up) }
+  \>            { action $ (State action_right) }
+  v            { action $ (State action_down) }
+  \<            { action $ (State action_left) }
+  \{             { newAction "body" "shift left" (2) }
+  \}             { newAction "body" "shift right" (2) }
+  \%             { newAction "body" "rock step" (2) }
+  _             { newAction "body" "even" (2) }
+  \-             { newAction "body" "freeze" (2) }
 
  
 
@@ -62,6 +70,18 @@ data Token = TChannel String  |
 action_up :: String -> (Action, String)
 action_up "feet" = (("kick", 1), "feet")
 action_up "body" = (("move forward", 2), "body")
+
+action_down :: String -> (Action, String)
+action_down "feet" = (("kick back", 1), "feet")
+action_down "body" = (("move backward", 2), "body")
+
+action_left :: String -> (Action, String)
+action_left "feet" = (("kick left", 1), "feet")
+action_left "body" = (("move left", 2), "body")
+
+action_right :: String -> (Action, String)
+action_right "feet" = (("kick right", 1), "feet")
+action_right "body" = (("move right", 2), "body")
 
 lexer = alexScanTokens
 run :: String -> Token -> (Action, String)
