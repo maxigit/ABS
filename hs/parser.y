@@ -4,6 +4,9 @@ import Lexer
 import TrackAcc
 import Tracker
 import Control.Monad.State
+ -- for debug
+import System.IO.Unsafe
+import System.IO
 }
 
 %name parser   
@@ -16,6 +19,7 @@ import Control.Monad.State
   SP     { TSpaces }
   taction { TAction $$ }
   tselector { TChannel $$ }
+  pipe  {TPipe }
   
 
 %%

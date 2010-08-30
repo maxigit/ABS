@@ -5,5 +5,5 @@ lexer.hs : parser.x
 	alex parser.x -o lexer.hs
 
 HappyParser.hs: parser.y lexer.hs Tracker.hs TrackAcc.hs 
-	happy parser.y -o HappyParser.hs
+	happy parser.y -a -g -d -c -o HappyParser.hs -iparser.info
 

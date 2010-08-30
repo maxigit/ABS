@@ -58,6 +58,9 @@ instance Monoid TrackAcc where
 emptyAcc :: TrackAcc
 emptyAcc = mempty
 
+mergeAcc :: TrackAcc -> TrackAcc -> TrackAcc
+mergeAcc (TrackAcc a) (TrackAcc b) = TrackAcc (M.unionWith mergeTrack a b )
+
 accToSubScore :: [Channel] -> TrackAcc -> Score
 accToSubScore chs acc = [ (ch, groupTrack (getTrackState ch acc))  | ch <- chs ] where
   groupTrack Nothing = []
