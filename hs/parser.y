@@ -16,7 +16,6 @@ import System.IO
 %token
   title  { TLabel $$ }
   NL     { TNewline }
-  SP     { TSpaces }
   taction { TAction $$ }
   tselector { TChannel $$ }
   pipe  {TPipe }
@@ -24,16 +23,18 @@ import System.IO
 
 %%
 -- set of action without separators
+tblocks : tblock NL { $1}
+        | tblock tblocks { $1 `mergeAcc` $2 }
 
-channel_sequence : tselector SP words { addActions $1  emptyAcc (concat $3) }
-words : word { [$1] }
-      | word SP words { $1:$3 }
+block : word { addActions "feet" emptyAcc $1 }
+tblock : tselector word { addActions $1  emptyAcc $2 }
+
 word : action { [ $1 ] }
          | action word { $1:$2 } 
 
 
 action : taction { $1 }
- | tselector taction { State (\c -> runState $2 $1)  }
+ -- | tselector taction { State (\c -> runState $2 $1)  }
 
 selector : tselector { $1 }
 

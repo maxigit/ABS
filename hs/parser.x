@@ -18,15 +18,16 @@ $actions = $printable # $spaces
 tokens :-
   ^ [a-zA-Z][^:\n]* /:      { \s -> TLabel s }
   "\#"$alpha+"#" { \s -> TChannel $(init.tail.tail) s }
-  \\             { \s -> TChannel "feet" }
-  \!             { \s -> TChannel "body" }
-  \$             { \s -> TChannel "bearing" }
-  \&             { \s -> TChannel "tangling" }
+  $spaces*$channel$spaces* { \s -> stringToChannel s }
+--  \\             { \s -> TChannel "feet" }
+--  \!             { \s -> TChannel "body" }
+--  \$             { \s -> TChannel "bearing" }
+--  \&             { \s -> TChannel "tangling" }
 
   "/"              { \s -> TSlash }
   "|"            {  \s -> TPipe }
   \n          { \s -> TNewline}
-  $spaces+   { \s -> TSpaces  }
+  $spaces+   ;--{ \s -> TSpaces  }
   --$actions     { action $ s }
   \*            { action $ (State (\c-> (("step", 1), "feet"))) }
   \,             { newAction "feet" "step" (1/2) }
@@ -66,6 +67,8 @@ data Token = TChannel String  |
              TSpaces      |
              TAction MAction
              --deriving (Show, Eq);
+stringToChannel :: String -> Token
+stringToChannel s = TChannel s
 
 action_up :: String -> (Action, String)
 action_up "feet" = (("kick", 1), "feet")
