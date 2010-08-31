@@ -68,7 +68,13 @@ data Token = TChannel String  |
              TAction MAction
              --deriving (Show, Eq);
 stringToChannel :: String -> Token
-stringToChannel s = TChannel s
+stringToChannel (' ':s) = stringToChannel s
+stringToChannel ('\t':s) = stringToChannel s
+stringToChannel ('\\':s) = TChannel "Feet"
+stringToChannel ('!':s) = TChannel "Body"
+stringToChannel ('$':s) = TChannel "Orientation"
+stringToChannel ('&':s) = TChannel "Tangling"
+
 
 action_up :: String -> (Action, String)
 action_up "feet" = (("kick", 1), "feet")
