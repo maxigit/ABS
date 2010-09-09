@@ -4,6 +4,7 @@ import Lexer
 import TrackAcc
 import Tracker
 import Control.Monad.State
+import Data.Monoid
  -- for debug
 import System.IO.Unsafe
 import System.IO
@@ -23,10 +24,16 @@ import System.IO
 
 %%
 -- set of action without separators
-tblocks : tblock NL { $1}
-        | tblock tblocks { $1 `mergeAcc` $2 }
+lines :  { emptyAcc  }
+      | line lines{ $1 `mappend` $2 }
+line : block tblocks { $1 `mappend` $2 } 
+     | tblocks { $1 }
 
-block : word { addActions "feet" emptyAcc $1 }
+tblocks : NL { emptyAcc }
+        | tblock tblocks { $1 `mappend` $2 }
+      
+
+block : word { addActions feet emptyAcc $1 }
 tblock : tselector word { addActions $1  emptyAcc $2 }
 
 word : action { [ $1 ] }
