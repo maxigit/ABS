@@ -101,4 +101,4 @@ run :: String -> Token -> (Action, String)
 run s (TAction m) = runState m s
 run s _ = (("", 0), s)
 }
-
+-- vim: ft=lex
