@@ -3,8 +3,9 @@ import Tracker
 import HappyParser
 
 
+strToTrack l = addBlankLine 0.5 ((scoreToTracker . parseScore) l)
 
 main = do 
   l <- getContents
-  print $ addBlankLine 0.5 ((scoreToTracker . parseScore) (l ++ ""))
+  print (strToTrack  (l ++ ""))
   {-print $ addBlankLine 0.5 ((scoreToTracker . parseScore) (l ++ "\n"))-}
