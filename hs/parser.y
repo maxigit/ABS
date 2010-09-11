@@ -26,13 +26,14 @@ import System.IO
 -- set of action without separators
 lines :  { emptyAcc  }
       | line lines{ $1 `mappend` $2 }
-line : block tblocks { $1 `mappend` $2 } 
+line : block tblocks { $1 `mergeAcc` $2 } 
      | tblocks { $1 }
 
 tblocks : NL { emptyAcc }
-        | tblock tblocks { $1 `mappend` $2 }
+        | tblock tblocks { $1 `mergeAcc` $2 }
       
 
+ {-Maybe we need a preprocessor to add auto () and defaut channel-}
 block : word { addActions feet emptyAcc $1 }
 tblock : tselector word { addActions $1  emptyAcc $2 }
 
@@ -67,3 +68,4 @@ parseError _ = error "Parse error"
 parseScore = accToScore . parse
 -- a la fin
 }
+-- vim: ft=haskell
