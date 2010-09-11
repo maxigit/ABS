@@ -3,7 +3,7 @@ import Data.Map(Map)
 import qualified Data.Map as M
 import Tracker
 import Data.Monoid
-import Data.List(groupBy)
+import Data.List(groupBy, sortBy)
 import Control.Monad.Writer
 
 {-TrackAcc is used by the Parser and store , all the intermediatary states need to parse it-}
@@ -64,9 +64,10 @@ mergeAcc (TrackAcc a) (TrackAcc b) = TrackAcc (M.unionWith mergeTrack a b )
 accToSubScore :: [Channel] -> TrackAcc -> Score
 accToSubScore chs acc = [ (ch, groupTrack (getTrackState ch acc))  | ch <- chs ] where
   groupTrack Nothing = []
-  groupTrack (Just ts) = map group (groupBy myeq evs) where
+  groupTrack (Just ts) = map group (groupBy myeq (sortBy mycmp evs)) where
       evs = events ts
   myeq e e' = (readWriterLog e ) == (readWriterLog e')
+  mycmp e e' = (readWriterLog e ) `compare` (readWriterLog e')
   group (w:ws) = (getSum (readWriterLog w) + 1, map readWriter (w:ws))
 
 accToScore :: TrackAcc -> Score
