@@ -81,20 +81,20 @@ stringToChannel ('&':s) = TChannel tangling
 
 
 action_up :: String -> (Action, String)
-action_up feet = (("kick", 1), feet)
-action_up body = (("move forward", 2), body)
+action_up "Feet" = (("kick", 1), "Feet")
+action_up "Body" = (("move forward", 2), "Body")
 
 action_down :: String -> (Action, String)
-action_down feet = (("kick back", 1), feet)
-action_down body = (("move backward", 2), body)
+action_down "Feet" = (("kick back", 1), "Feet")
+action_down "Body" = (("move backward", 2), "Body")
 
 action_left :: String -> (Action, String)
-action_left feet = (("kick left", 1), feet)
-action_left body = (("move left", 2), body)
+action_left "Feet" = (("kick left", 1), "Feet")
+action_left "Body" = (("move left", 2), "Body")
 
 action_right :: String -> (Action, String)
-action_right feet = (("kick right", 1), feet)
-action_right body = (("move right", 2), body)
+action_right "Feet" = (("kick right", 1), "Feet")
+action_right "Body" = (("move right", 2), "Body")
 
 lexer = alexScanTokens
 run :: String -> Token -> (Action, String)
