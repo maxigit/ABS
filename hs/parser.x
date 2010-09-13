@@ -41,8 +41,10 @@ tokens :-
   \>            { action $ (State action_right) }
   v            { action $ (State action_down) }
   \<            { action $ (State action_left) }
-  \{             { newAction body "shift left" (2) }
-  \}             { newAction body "shift right" (2) }
+  \{             { newAction body "weight left" (2) }
+  \{\{             { newAction body "shift left" (2) } -- whatever change the weight, whenever
+  \}             { newAction body "weight right" (2) }
+  \}\}             { newAction body "shift right" (2) }
   \%             { newAction body "rock step" (2) }
   \;              { newAction feet "step step " 2}
   _             { newAction body "even" (2) }
@@ -53,7 +55,18 @@ tokens :-
   \?             { newAction body "1/2 turn" 2 }
   \?\?             { newAction body "1/4 turn" 2 }
 
-  x     { newAction feet "cross" 1 }
+  x     { newAction feet "cross step" 1 } -- pieds croises a cote
+  z     { newAction feet "cross forward" 1 } -- 
+  X     { newAction body "X stanse" 2 }
+  A     { newAction body "A stanse" 2 } -- pied ecarte
+  M     { newAction body "M stanse" 2 } -- pieds sous les epaules
+  I     { newAction body "I stanse" 2 } -- pieds joints
+  w     { newAction body "feet outward" 2 } -- mi
+  m     { newAction body "feet inward" 2 } -- mi
+  s     { newAction body "fold" 2 } -- strong compression, before or jump or stop
+  S     { newAction body "bend" 2 }
+  \~     { newAction body "slide" 0 }
+  \~\~     { newAction body "Jump" 0 }
 
  
 
