@@ -24,18 +24,19 @@ import System.IO
 
 %%
 -- set of action without separators
-lines :  { emptyAcc  }
-      | line lines{ $1 `mappend` $2 }
-line : block tblocks { $1 `mergeAcc` $2 } 
+-- really ugly we have to store all the lines first,so we can superAdd them form left to right
+lines :  { [ ]} 
+      | line lines{ $1 : $2 }
+line : block tblocks { mergeSuper (SuperAcc feet $1) $2 } 
      | tblocks { $1 }
 
-tblocks : NL { emptyAcc }
-        | tblock tblocks { $1 `mergeAcc` $2 }
+tblocks : NL { SuperAcc undefined  emptyAcc }
+        | tblock tblocks { mergeSuper $1 $2 }
       
 
  {-Maybe we need a preprocessor to add auto () and defaut channel-}
 block : word { addActions feet emptyAcc $1 }
-tblock : tselector word { addActions $1  emptyAcc $2 }
+tblock : tselector word { SuperAcc $1 (addActions $1  emptyAcc $2) }
 
 word : action { [ $1 ] }
          | action word { $1:$2 } 
@@ -61,7 +62,7 @@ data PAction = PAction {action :: String, channel :: (Maybe String)} deriving (S
 data PSequence = PSequence { channel2 :: (Maybe String), actions :: [[PAction]] } deriving (Show, Eq)
 
 -- main = getContents >>= print . parser . lexer
-parse = parser.lexer
+parse x = acc $ foldl1 addSuper  ((parser.lexer) x)
 parseError :: [Token] -> a
 parseError _ = error "Parse error"
 

@@ -88,4 +88,8 @@ shift :: Beat -> TrackAcc -> TrackAcc
 shift delay (TrackAcc m) = TrackAcc (M.map (\t -> (TrackState  0 delay [] )`mappend` t ) m)
 
 split :: Channel -> TrackAcc -> (TrackState, TrackAcc)
-split = error "split not defined"
+split c (TrackAcc acc) = (t, TrackAcc (a `M.union` b))
+  where (a, maybe_t, b) = M.splitLookup c acc
+        t =  case maybe_t of
+              (Just t) -> t
+              Nothing -> mempty
