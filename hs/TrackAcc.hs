@@ -60,7 +60,8 @@ emptyAcc :: TrackAcc
 emptyAcc = mempty
 
 mergeAcc :: TrackAcc -> TrackAcc -> TrackAcc
-mergeAcc (TrackAcc a) (TrackAcc b) = TrackAcc (M.unionWith mergeTrack a b )
+mergeAcc (TrackAcc a) (TrackAcc b) = TrackAcc (M.unionWith mergeTrack a (M.map resetState b)) where
+  resetState (TrackState _ _ evs) = TrackState 0 0 evs
 
 accToSubScore :: [Channel] -> TrackAcc -> Score
 accToSubScore chs acc = [ (ch, groupTrack (getTrackState ch acc))  | ch <- chs ] where
@@ -79,9 +80,10 @@ mergeSuper :: SuperAcc -> SuperAcc -> SuperAcc
 mergeSuper (SuperAcc c a) (SuperAcc _ b) = SuperAcc c (a `mergeAcc` b)
 
 addSuper :: SuperAcc -> SuperAcc -> SuperAcc
-addSuper (SuperAcc c a) (SuperAcc _ b) = SuperAcc c $ a `mappend` (TrackAcc $ M.singleton c bc) `mergeAcc` (shift i b_c) where
+addSuper (SuperAcc _ a) (SuperAcc c b) = SuperAcc c $ a `mappend` (TrackAcc $ M.singleton c bc) `mergeAcc` (shift i b_c) where
   (bc, b_c ) = split c b
-  i = insertPoint bc
+  (ac, _ ) = split c a
+  i = insertPoint ac
   
 
 shift :: Beat -> TrackAcc -> TrackAcc
