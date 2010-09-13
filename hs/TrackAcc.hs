@@ -9,6 +9,7 @@ import Control.Monad.Writer
 {-TrackAcc is used by the Parser and store , all the intermediatary states need to parse it-}
 data TrackState = TrackState { lastBeat :: Beat, insertPoint :: Beat, events :: [Event]} deriving (Show)
 data TrackAcc = TrackAcc (Map Channel  TrackState ) deriving (Show)
+data SuperAcc = SuperAcc { master :: Channel, acc:: TrackAcc}
 
 -- TrackAcc
 instance Monoid TrackState where
@@ -73,3 +74,18 @@ accToSubScore chs acc = [ (ch, groupTrack (getTrackState ch acc))  | ch <- chs ]
 accToScore :: TrackAcc -> Score
 accToScore acc@(TrackAcc m) = accToSubScore (M.keys m) acc
 
+
+mergeSuper :: SuperAcc -> SuperAcc -> SuperAcc
+mergeSuper (SuperAcc c a) (SuperAcc _ b) = SuperAcc c (a `mergeAcc` b)
+
+addSuper :: SuperAcc -> SuperAcc -> SuperAcc
+addSuper (SuperAcc c a) (SuperAcc _ b) = SuperAcc c $ a `mappend` (TrackAcc $ M.singleton c bc) `mergeAcc` (shift i b_c) where
+  (bc, b_c ) = split c b
+  i = insertPoint bc
+  
+
+shift :: Beat -> TrackAcc -> TrackAcc
+shift delay (TrackAcc m) = TrackAcc (M.map (\t -> (TrackState  0 delay [] )`mappend` t ) m)
+
+split :: Channel -> TrackAcc -> (TrackState, TrackAcc)
+split = error "split not defined"
