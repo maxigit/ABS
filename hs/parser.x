@@ -46,7 +46,7 @@ tokens :-
   \}             { newAction body "weight right" (2) }
   \}\}             { newAction body "shift right" (2) }
   \%             { newAction body "rock step" (2) }
-  \;              { newAction feet "step step " 2}
+  \;              { newAction feet "triple" 1}
   _             { newAction body "even" (2) }
   o             { newAction feet "hold" 1 }
   \-             { newAction body "freeze" (2) }
