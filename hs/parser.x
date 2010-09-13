@@ -7,7 +7,7 @@ import Control.Monad.State
 }
 
 %wrapper "basic"
-$channel = [\\\!\$\\@]
+$channel = [\\\!\$\\&]
 $alpha = [a-zA-Z]
 $spaces = [\ \t]
 $actions = $printable # $spaces
@@ -30,6 +30,7 @@ tokens :-
   $spaces+   ;--{ \s -> TSpaces  }
   --$actions     { action $ s }
   \*            { action $ (State (\c-> (("step", 1), feet))) }
+  \+            { action $ (State (\c-> (("hop", 1), feet))) }
   \,             { newAction feet "step" (1/2) }
   3             { newAction feet "step" (1/3) }
   \'             { newAction feet "touch" (1/2) }
@@ -43,8 +44,16 @@ tokens :-
   \{             { newAction body "shift left" (2) }
   \}             { newAction body "shift right" (2) }
   \%             { newAction body "rock step" (2) }
+  \;              { newAction feet "step step " 2}
   _             { newAction body "even" (2) }
+  o             { newAction feet "hold" 1 }
   \-             { newAction body "freeze" (2) }
+  \@\@             { newAction body "2 spin" 2 }
+  \@             { newAction body "spin" 2 }
+  \?             { newAction body "1/2 turn" 2 }
+  \?\?             { newAction body "1/4 turn" 2 }
+
+  x     { newAction feet "cross" 1 }
 
  
 
