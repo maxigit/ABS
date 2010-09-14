@@ -56,8 +56,7 @@ tokens :-
  -- [<>+- {}][@?] +@? (<@) +? -? {? Neater with brackets around
 
   x     { newAction feet "cross step" 1 } -- pieds croises a cote
-  =     { newAction feet "both feet" 2 } -- 
-  =     { newAction body "weight middle" 2 } -- 
+  =     { multiChannel feet "both feet" 2 [(body, "weight middle", 2)] } -- 
   z     { newAction feet "cross forward" 1 } -- 
   X     { newAction body "X stanse" 2 }
   A     { newAction body "A stanse" 2 } -- pied ecarte
@@ -82,8 +81,8 @@ newAction channel action length s  = TAction (State (\c -> ((action, length), ch
 action :: MAction -> a -> Token
 action m s =  TAction m
 
-multiChannel :: String ->  String -> Rational -> [(String, String, Rational)] -> Token
-multiChannel channel action length actions =  TAction (State findIt ) where
+multiChannel :: String ->  String -> Rational -> [(String, String, Rational)] -> String -> Token
+multiChannel channel action length actions s =  TAction (State findIt ) where
     findIt  :: String -> (Action, String)
     findIt c = case (M.lookup c  m ) of 
                   Just a ->  a
