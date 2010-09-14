@@ -43,7 +43,8 @@ word : action { [ $1 ] }
 
 
 action : taction { $1 }
- -- | tselector taction { State (\c -> runState $2 $1)  }
+         | tselector taction { State (\c -> runState $2 $1)  }
+         --| tselector taction { State (\c -> runState $2 $1)  }
 
 selector : tselector { $1 }
 
