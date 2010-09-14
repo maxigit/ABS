@@ -2,8 +2,10 @@ all: lexer.hs HappyParser.hs
 
 lexer.hs : parser.x
 	alex parser.x -o lexer.hs
+SpinLexer.hs : spinparser.x
+	alex $< -o $@
 
-HappyParser.hs: parser.y lexer.hs Tracker.hs TrackAcc.hs 
+HappyParser.hs: SpinLexer.hs parser.y lexer.hs Tracker.hs TrackAcc.hs 
 	happy parser.y -a -g -d -c -o HappyParser.hs -iparser.info
 
 
