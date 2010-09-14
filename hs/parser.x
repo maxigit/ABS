@@ -36,8 +36,8 @@ tokens :-
   \"             { newAction feet "shuffle" (1) }
   :            { action $ (return ("rest",1)) }
   \.            { action $ (return ("rest",1/2)) }
-  \^            { action $ (State action_up) }
-  \>            { action $ (State action_right) }
+  "^"            { action $ (State action_up) }
+  ">"            { action $ (State action_right) }
   v            { action $ (State action_down) }
   \<            { action $ (State action_left) }
   \{             { newAction body "weight left" (2) }
@@ -49,16 +49,17 @@ tokens :-
   _             { newAction body "even" (2) }
   o             { newAction feet "hold" 1 }
   \-             { newAction body "freeze" (2) }
-  \(\@\@\)             { newAction body "double spin" 2 } -- @@ or (@@) 
+  --\(\@\@\)             { newAction body "double spin" 2 } -- @@ or (@@) 
   \@             { newAction body "spin" 2 }
-  \?             { newAction body "1/2 turn" 2 }
-  (\?\?)             { newAction body "1/4 turn" 2 } -- (??)
- -- [<>+- {}][@?] +@? (<@) +? -? {? Neater with brackets around
+  \?             { multiChannel body "1/2 turn" 2 [(feet, "hook back", 1)] } -- ^!? after a ^
+  --(\?\?)             { newAction body "1/4 turn" 2 } -- (??)
+\([\<>\{\}\+\-]?[\?\@]+\)  { \s -> TAction (State (\c -> (("spin :" ++s , 2), body)))  } -- ?? = 1/4 <> spin left/right +- spin outward/indward (outward = to the left on left foot)
 
   x     { newAction feet "cross step" 1 } -- pieds croises a cote
-  =     { multiChannel feet "both feet" 2 [(body, "weight middle", 2)] } -- 
+  -- =     { multiChannel feet "both feet" 2 [(body, "weight middle", 2)] } --
+  =     { multiChannel body "weight middle" 2 [(feet, "both feet", 2)] } -- 
   z     { newAction feet "cross forward" 1 } -- 
-  X     { newAction body "X stanse" 2 }
+  X     { newAction body "X stanse" 2 } -- crossed feet
   A     { newAction body "A stanse" 2 } -- pied ecarte
   M     { newAction body "M stanse" 2 } -- pieds sous les epaules
   I     { newAction body "I stanse" 2 } -- pieds joints
