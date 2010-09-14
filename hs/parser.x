@@ -3,6 +3,7 @@ module Lexer where
 import Data.Ratio
 import Control.Monad.State
 import qualified Data.Map as M
+import qualified SpinLexer as S
 }
 
 %wrapper "basic"
@@ -53,7 +54,7 @@ tokens :-
   \@             { newAction body "spin" 2 }
   \?             { multiChannel body "1/2 turn" 2 [(feet, "hook back", 1)] } -- ^!? after a ^
   --(\?\?)             { newAction body "1/4 turn" 2 } -- (??)
-\([\<>\{\}\+\-]?[\?\@]+\)  { \s -> TAction (State (\c -> (("spin :" ++s , 2), body)))  } -- ?? = 1/4 <> spin left/right +- spin outward/indward (outward = to the left on left foot)
+\([\<>\{\}\+\-]?[\?\@]+\)  { \s -> TAction (State (\c -> ((S.parse s, 2), body)))  } -- ?? = 1/4 <> spin left/right +- spin outward/indward (outward = to the left on left foot)
 
   x     { newAction feet "cross step" 1 } -- pieds croises a cote
   -- =     { multiChannel feet "both feet" 2 [(body, "weight middle", 2)] } --
