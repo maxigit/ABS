@@ -43,6 +43,9 @@ write w m = do
 delayed :: Rational -> Event -> Event
 delayed d e = write (Sum d) e
 
+stretch :: Rational -> Event -> Event
+stretch d (Writer (e, (Sum t))) = Writer (e, (Sum (d*t))) 
+
 
 -- A track is a transposed score
 type Track = [(Beat, CommandGroup)] -- should be sorted

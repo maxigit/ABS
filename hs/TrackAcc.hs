@@ -95,3 +95,7 @@ split c (TrackAcc acc) = (t, TrackAcc (a `M.union` b))
         t =  case maybe_t of
               (Just t) -> t
               Nothing -> mempty
+
+compressAcc :: Beat -> TrackAcc -> TrackAcc
+compressAcc  total (TrackAcc tracks)= TrackAcc  (M.map compress tracks) where
+  compress (TrackState b i evs)= TrackState (b*s) (i*s) (map (stretch s) evs) where s = total / i

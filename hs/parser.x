@@ -26,6 +26,10 @@ tokens :-
 
   "/"              { \s -> TSlash }
   "|"            {  \s -> TPipe }
+  "("            {  \s -> TOpen }
+  ")"            {  \s -> TClose }
+  "["            {  \s -> TOpenS }
+  "]"            {  \s -> TCloseS }
   \n          { \s -> TNewline}
   $spaces+   ;--{ \s -> TSpaces  }
   --$actions     { action $ s }
@@ -100,6 +104,8 @@ data Token = TChannel String  |
              TLabel String |
              TSlash           |
              TPipe            |
+             TOpen | TClose   |
+             TOpenS | TCloseS |
              TNewline|
              TSpaces      |
              TAction MAction
