@@ -74,16 +74,8 @@ addTActions ch  tacs  = foldl (push ch) emptyAcc tacs  where
      push ch acc' (Single a) | ch' == ch  = pushCommand acc' ch' c l
                              | True  = insertCommandAndShiftChannel acc' ch' ch c l
                              where (ch', c, l) = runState a ch
-     push ch acc (Timed acs length) = acc `mappend` (compressAcc length (addTActions ch acs)
+     push ch acc (Timed acs length) = acc `mappend` (compressAcc length (addTActions ch acs))
             
-
-compress :: Beat -> [MAction] -> [MAction]
-compress _ [] = []
-compress l ms = map ( \a -> State (compressState a)) ms where
-  compressState a c = ((com, beat*l/total), channel) where
-    ((com, beat), channel) = runState a c
-    total = fromIntegral (length ms)
-
 data PAction = PAction {action :: String, channel :: (Maybe String)} deriving (Show, Eq)
 data PSequence = PSequence { channel2 :: (Maybe String), actions :: [[PAction]] } deriving (Show, Eq)
 
