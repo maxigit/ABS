@@ -76,6 +76,10 @@ addTActions ch  tacs  = foldl (push ch) emptyAcc tacs  where
                              where ((a, l), ch') = runState act ch
                                    c = return a
      push ch acc (Timed acs length) = acc `mappend` (compressAcc length (addTActions ch acs))
+     push ch acc (Simultaneous acs ) = acc `mappend`
+        ( foldl1 mergeAcc ( map
+              (addTActions ch)  (map return  acs)
+        ))
             
 data PAction = PAction {action :: String, channel :: (Maybe String)} deriving (Show, Eq)
 data PSequence = PSequence { channel2 :: (Maybe String), actions :: [[PAction]] } deriving (Show, Eq)
