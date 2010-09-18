@@ -39,17 +39,17 @@ tblocks : NL { SuperAcc undefined  emptyAcc }
       
 
  {-Maybe we need a preprocessor to add auto () and defaut channel-}
-block : word { addTActions feet emptyAcc $1 }
-tblock : tselector word { SuperAcc $1 (addActions $1  emptyAcc $2) }
+block : word { addTActions feet  $1 }
+tblock : tselector word { SuperAcc $1 (addTActions $1 $2) }
 
-word : actions { Single $1 }
-      | "(" actions ")" { Timed 2 $2  }
-      | "[" actions "]" { Simultaneous $2  }
+word : actions { $1 }
 actions: action { [$1] }
          | action word { $1:$2 } 
 
 
-action : taction { ([$1], 0) }
+action : taction { Single $1 }
+          | "(" actions ")" { Timed $2 2 }
+          | "[" actions "]" { Simultaneous $2  }
 --         | tselector taction { State (\c -> runState $2 $1)  }
 
 selector : tselector { $1 }
@@ -71,9 +71,10 @@ addActions ch acc acs  = foldl push acc (map f acs) where
 addTActions :: Channel -> [ActionTree] -> TrackAcc
 addTActions ch  tacs  = foldl (push ch) emptyAcc tacs  where
      push :: Channel -> TrackAcc -> ActionTree -> TrackAcc
-     push ch acc' (Single a) | ch' == ch  = pushCommand acc' ch' c l
+     push ch acc' (Single act) | ch' == ch  = pushCommand acc' ch' c l
                              | True  = insertCommandAndShiftChannel acc' ch' ch c l
-                             where (ch', c, l) = runState a ch
+                             where ((a, l), ch') = runState act ch
+                                   c = return a
      push ch acc (Timed acs length) = acc `mappend` (compressAcc length (addTActions ch acs))
             
 data PAction = PAction {action :: String, channel :: (Maybe String)} deriving (Show, Eq)
