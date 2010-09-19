@@ -18,7 +18,7 @@ $actions = $printable # $spaces
 tokens :-
   ^ [a-zA-Z][^:\n]* /:      { \s -> TLabel s }
   "\#"$alpha+"#" { \s -> TChannel $(init.tail.tail) s }
-  $spaces*$channel$spaces* { \s -> stringToChannel s }
+  $spaces*$channel$spaces+ { \s -> stringToChannel s }
 --  \\             { \s -> TChannel feet }
 --  \!             { \s -> TChannel body }
 --  \$             { \s -> TChannel "bearing" }
@@ -38,7 +38,6 @@ tokens :-
   "-"            { multiChannel feet "free even steps" 2 [(body, "nochange weigth", 2)] }
   ";"            { action $ (State (\c-> (("hop", 1), feet))) }
   \,             { newAction feet "step" (1/2) }
-  3             { newAction feet "step" (1/3) }
   \'             { newAction feet "touch" (1/2) }
   \"             { newAction feet "shuffle" (1) }
   :            { action $ (return ("rest",1)) }
@@ -74,6 +73,10 @@ tokens :-
   \~\~     { newAction body "Jump" 0 } -- % s ~~=
 
  
+  "0"            { multiChannel feet "still" 2 [(body, "still", 2)] }
+  "1"            { multiChannel feet "one step" 2 [(body, "switch weight", 2)] }
+  "2"            { multiChannel feet "double steps" 2 [(body, "push push", 2)] }
+  "3"            { multiChannel feet "triple steps" 2 [(body, "3 push", 2)] }
 
 {
 type Action = (String, Rational)
