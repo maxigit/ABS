@@ -38,7 +38,7 @@ tokens :-
   "-"            { multiChannel feet "free even steps" 2 [(body, "nochange weigth", 2)] }
   ";"            { action $ (State (\c-> (("hop", 1), feet))) }
   \,             { newAction feet "step" (1/2) }
-  \'             { newAction feet "touch" (1/2) }
+  \'             { newAction feet "touch" (1) }
   \"             { newAction feet "shuffle" (1) }
   :            { action $ (return ("rest",1)) }
   \.            { action $ (return ("rest",1/2)) }
