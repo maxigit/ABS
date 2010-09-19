@@ -325,3 +325,36 @@ _, -                 2                                        anything even
 
 % \3 \2 \3
 
+for body weight we need to differentiate
+- steps which end changing the groud foot, feet wildcard ?
+- weight transfert (on still foot)
+- weight swap
+- double weight swaw % ?
+
+so rock step will be
+v* !%
+or\%
+ \% { _ }  => rock step what , even, odd, even
+! % { _ } => push/push  push left , still push right
+!% = ({})
+do we need a { or } wildcar ? ( just push or swap)
+_+_+ -+-+
+  - + +	_++
+ { - } =_=+ { _ }
+:=
+% { _ }
+even steps (feet) => -
+odd steps (feet) => +
+change weight (body) => +
+hop (feet) ;
+freeze (body)  => = (should be feet but freeze everything ;-)
+freeze (feet) => =
+weight middle (body) => _
+both feet (feet) => " [*|*] , _ ?
+
+_ :X_
+todo:
+change % - + = and add number
+fix [] length
+add / operator
+ 
