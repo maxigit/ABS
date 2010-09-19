@@ -19,7 +19,7 @@ import System.IO
   NL     { TNewline }
   taction { TAction $$ }
   tselector { TChannel $$ }
-  pipe  {TPipe }
+  "|" {TPipe }
   "(" { TOpen }
   ")" { TClose }
   "[" { TOpenS }
@@ -47,8 +47,12 @@ actions: action { [$1] }
          | action word { $1:$2 } 
 
 
+actions_list: actions  { [$1] }
+            | "|" actions_list { [Single (return ("", 1) )]:$2  }
+             | actions "|"  actions_list { $1:$3}
 action : taction { Single $1 }
-          | "(" actions ")" { Timed $2 2 }
+          --| "(" actions ")" { Timed $2 2 }
+          | "(" actions_list ")" { Timed [Timed x 1 | x <- $2] 2 }
           | "[" actions "]" { Simultaneous $2  }
 --         | tselector taction { State (\c -> runState $2 $1)  }
 
