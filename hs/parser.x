@@ -36,12 +36,13 @@ tokens :-
   \*            { action $ (State (\c-> (("step", 1), feet))) }
   "+"            { multiChannel feet "free odd steps" 2 [(body, "change weigth", 2)] }
   "-"            { multiChannel feet "free even steps" 2 [(body, "nochange weigth", 2)] }
-  ";"            { action $ (State (\c-> (("hop", 1), feet))) }
-  \,             { newAction feet "step" (1/2) }
+  ";"            { newAction feet "stamp"  1 }
+  ";/-"            { newAction feet "stomp"  1 }
+  \,             { newAction feet "heel" (1) }
   \'             { newAction feet "touch" (1) }
   \"             { newAction feet "shuffle" (1) }
-  :            { action $ (return ("rest",1)) }
-  \.            { action $ (return ("rest",1/2)) }
+  :            { action $ (return ("",1)) }
+  \.            { action $ (return ("rest",1)) }
   "^"            { action $ (State action_up) }
   ">"            { action $ (State action_right) }
   v            { action $ (State action_down) }
