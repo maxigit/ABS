@@ -24,6 +24,7 @@ import System.IO
   ")" { TClose }
   "[" { TOpenS }
   "]" { TCloseS }
+  "/" { TSlash}
   
 
 %%
@@ -54,6 +55,7 @@ action : taction { Single $1 }
           --| "(" actions ")" { Timed $2 2 }
           | "(" actions_list ")" { Timed [Timed x 1 | x <- $2] 2 }
           | "[" actions "]" { Simultaneous $2  }
+          | taction "/" taction { Simultaneous [Single $1, Single $3] }
 --         | tselector taction { State (\c -> runState $2 $1)  }
 
 selector : tselector { $1 }
