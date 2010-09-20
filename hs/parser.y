@@ -79,8 +79,8 @@ addTActions ch  tacs  = foldl (push ch) emptyAcc tacs  where
                              | True  = insertCommandAndShiftChannel acc' ch' ch c l
                              where ((a, l), ch') = runState act ch
                                    c = return a
-     push ch acc (Timed acs length) = acc `mappend` (compressAcc length (addTActions ch acs))
-     push ch acc (Simultaneous acs ) = acc `mappend`
+     push ch acc (Timed acs length) = mergeAndAdd ch acc (compressAcc length (addTActions ch acs))
+     push ch acc (Simultaneous acs ) = mergeAndAdd ch acc 
         ( foldl1 mergeAcc ( map
               (addTActions ch)  (map return  acs)
         ))

@@ -84,6 +84,9 @@ addSuper (SuperAcc _ a) (SuperAcc c b) = SuperAcc c $ a `mappend` (TrackAcc $ M.
   (bc, b_c ) = split c b
   (ac, _ ) = split c a
   i = insertPoint ac
+
+mergeAndAdd :: Channel -> TrackAcc -> TrackAcc -> TrackAcc
+mergeAndAdd c a b = acc ((SuperAcc c a) `addSuper` (SuperAcc c b))
   
 
 shift :: Beat -> TrackAcc -> TrackAcc
