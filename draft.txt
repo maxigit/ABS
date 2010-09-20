@@ -358,3 +358,10 @@ change % - + = and add number
 fix [] length
 add / operator
  
+
+Macro
+- means without weight
++ mean with
+stomp : [;-] ;/-
+^/+ step forward
+hop : */- ~~*/-
