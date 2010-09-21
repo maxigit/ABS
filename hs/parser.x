@@ -16,7 +16,7 @@ $actions = $printable # $spaces
 -- we use action , as opposed to command, because an action has duration
 
 tokens :-
-  ^ [a-zA-Z][^:\n]* /:      { \s -> TLabel s }
+  --^[a-zA-Z][^:\n]* /:      { \s -> TLabel s }
   "\#"$alpha+"#" { \s -> TChannel $(init.tail.tail) s }
   $spaces*$channel$spaces+ { \s -> stringToChannel s }
 --  \\             { \s -> TChannel feet }
@@ -41,8 +41,8 @@ tokens :-
   \,             { newAction feet "heel" (1) }
   \'             { newAction feet "touch" (1) }
   \"             { newAction feet "shuffle" (1) }
-  :            { action $ (return ("",1)) }
-  \.            { action $ (return ("rest",1)) }
+  \:            { action $ (return ("",1)) }
+  \.            { action $ (return ("",1/2)) } -- to stop an action
   "^"            { action $ (State action_up) }
   ">"            { action $ (State action_right) }
   v            { action $ (State action_down) }
@@ -59,6 +59,8 @@ tokens :-
 \([\<>\{\}\+\-]?[\?\@]+\)  { \s -> TAction (State (\c -> ((S.parse s, 2), body)))  } -- ?? = 1/4 <> spin left/right +- spin outward/indward (outward = to the left on left foot)
 
   x     { newAction feet "cross step" 1 } -- pieds croises a cote
+  t     { newAction feet "toe" 1 } 
+  h     { newAction feet "hop" 1 } 
   _     { multiChannel body "weight middle" 2 [(feet, "both feet", 2)] } -- 
   =     { multiChannel body "freeze" 2 [(feet, "freeze", 2)] } -- 
   z     { newAction feet "cross forward" 1 } -- 
