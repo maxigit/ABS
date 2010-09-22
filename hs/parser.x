@@ -11,6 +11,8 @@ $channel = [\\\!\$\\&]
 $alpha = [a-zA-Z]
 $spaces = [\ \t]
 $actions = $printable # $spaces
+$positions = [<\^>vo*]
+$arms = [\\\/-=xX]
 
 
 -- we use action , as opposed to command, because an action has duration
@@ -50,13 +52,13 @@ tokens :-
   \{             { multiChannel feet "ending left" 2 [(body, "push left" ,2)] }
   \}             { multiChannel feet "ending right" 2 [(body, "push right" ,2)] }
   \%             { multiChannel feet "rock step" 2 [(body, "push push",2) ] }
-  \;              { newAction feet "step step " 1}
   o             { newAction feet "hold" 1 }
   --\(\@\@\)             { newAction body "double spin" 2 } -- @@ or (@@) 
   \@             { newAction body "spin" 2 }
   \?             { multiChannel body "1/2 turn" 2 [(feet, "hook back", 1)] } -- ^!? after a ^
   --(\?\?)             { newAction body "1/4 turn" 2 } -- (??)
-\([\<>\{\}\+\-]?[\?\@]+\)  { \s -> TAction (State (\c -> ((S.parse s, 2), body)))  } -- ?? = 1/4 <> spin left/right +- spin outward/indward (outward = to the left on left foot)
+\[[\<>\{\}\+\-]?[\?\@]+\]  { \s -> TAction (State (\c -> ((S.parse s, 2), body)))  } -- ?? = 1/4 <> spin left/right +- spin outward/indward (outward = to the left on left foot)
+\[$positions$arms$positions\]
 
   x     { newAction feet "cross step" 1 } -- pieds croises a cote
   t     { newAction feet "toe" 1 } 

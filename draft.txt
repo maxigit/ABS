@@ -358,6 +358,83 @@ change % - + = and add number
 fix [] length
 add / operator
  
+tangling (arms and body)
+& v\^ &
+&[v\^]
+[:v\^:]
+[&v\^&]
+[ v\^ ]
+&(v\^)
+
+|> |^
+V => V basic
+A or balboa position shoulder stuck
+U parallel V => U/^ with main en l'air
+M, N plan/ central  symetry (follower/leader arms ) stay (state) (not as a modifier)
+W side by side  main dans la main
+w little side by side panier
+C face a face => J
+c face a face cole
+Z face main main oppose inverse ~Z (ou z)  Z = C/N
+S facing opposite direction independemment des mains
+H back to back
+; train
+' follower , leader ???
+ ~ inverse /reverse left right arms for both for next action
+~~ toggle inversion
+D swing out position | stretch V one ventre du D = bras dans le dos
+O face a face 2 mains 
+o face a face 2 mains serre
+>-<@ R ?
+[&| cststst |]
+&| v-^|
+[[ v-^ ]]
+[| v-^ |]
+
+arms (follower)
+y main dans le dos (homoplate)
+j main gauche dans le dos de face (swing out)
+t main droite dans le dos = j/{
+u main autour de la taille
+n danseuse bras derriere le dos
+^, v  main en l'air , en bas etc.
+T main sur l'epaule
+= 2 mains
+x,X 2 mains croisees
+/{ /} modifier left/right arm
+
+b d q p ne dis pas la direction du bras (a part dans le dos)
+ou b d bras leader p q bras danseuse
+b/q linked
+b~d changement de main? 
+ou bras haut ou bas
+modifier for bras en l air , mains dans le dos etc
+b/v bras droit devant en bas
+by
+* mains libre ou lache
++ change main
+% - change main dans le dos ???
+L danseuse bras plie ou espagnole
+? sw
+ou
+b/q
+
+VCOCp
+Vc?C
+? turn or hand behing the back
+
+
+
+
+v body direction
+* body don't cae
+/ rr
+\ ll
+- lr
+_ rl
+x cross 
+X arm under
+
 
 Macro
 - means without weight

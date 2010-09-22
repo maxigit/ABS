@@ -1,0 +1,47 @@
+@date 2010-09-22
+@advanced
+
+tuck turn hand on hips:
+\ 2 3 3
+#:3 b/e
+! % [??] @
+& V c @   C
+& C 
+
+tuck turn 2 double turn 8 beats:
+\ 2 3 2 3
+& Vc@@    C
+
+tuck turn jump:
+\ % s~~_
+& V c  C
+
+tuck turn jump/steping to high flies (or something)
+\ % [3s]~~[?}]
+& V c     [M $>]
+& V c     ~W
+
+\ % ^* ^? v*
+ v? ^* ^? v*
+
+... to hand to hand charleston
+$ >
+\ ** >* [>*]* <
+! {} >[>?] ><
+
+
+  **    ! {}      & C   $M
+  >*    ! >(?>)  || >[@>]
+  */> * ! }{
+  <*              & ~Z $N
+
+ C [?|@] ~Z
+
+
+balade
+& VcCV
+! % [+|(??)] ^^ ? -- push
+! % [(??)|+] ^^ ? -- push
+
+
+

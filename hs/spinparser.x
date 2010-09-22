@@ -8,8 +8,8 @@ import Data.List
 tokens :-
     \( ;
   \)  ;
-  "<" { \s  ->  ("right", 0 :: Rational) }
-  ">" { \s  ->  ("left", 0 :: Rational) }
+  ">" { \s  ->  ("right", 0 :: Rational) }
+  "<" { \s  ->  ("left", 0 :: Rational) }
   "+" { \s  ->  ("outward", 0 :: Rational) }
   "-" { \s  ->  ("inward", 0 :: Rational) }
 
